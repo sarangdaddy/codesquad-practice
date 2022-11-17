@@ -12,15 +12,12 @@ moveStr.getInputValue = function (event) {
   this.userWord = this.arrayWord[0];
   this.userNumber = Number(this.arrayWord[1]);
   this.userOrder = this.arrayWord[2].toUpperCase();
-
-  this.moveUeserWord(this.userWord, this.userNumber, this.userOrder);
+  this.changeInputValue(this.userWord, this.userNumber, this.userOrder);
   inputValue.value = "";
 };
 
-moveStr.moveUeserWord = function (word, n, option) {
-  console.log(word, n, option);
+moveStr.changeInputValue = function (word, n, option) {
   let wordArray = word.split("");
-  console.log(wordArray);
   if (option === "L") {
     let i = 1;
     while (i <= n) {
@@ -38,14 +35,13 @@ moveStr.moveUeserWord = function (word, n, option) {
       i++;
     }
   }
-  console.log(wordArray);
-  this.getResult(wordArray);
+  this.showInputValue(wordArray);
 };
 
-moveStr.getResult = function (word) {
+moveStr.showInputValue = function (word) {
+  const changedStr = word.join("");
   const span = document.createElement("span");
-  const changeToStr = word.join("");
-  span.innerHTML = changeToStr + "</br>";
+  span.innerHTML = changedStr + "</br>";
   showResult.appendChild(span);
 };
 

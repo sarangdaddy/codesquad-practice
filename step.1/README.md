@@ -37,138 +37,91 @@ atc
 
 # 구조
 
-입력값을 받아오고 프로그램을 실행시키기 위한 Main class와 단어를 밀어내기 위한 PushWords class를 구현했다.
+사용자의 입력 내용을 받아 프로그래밍으로 내용을 변경하고 호출하는 함수로 구현했다.
 
 ### 📑 목차
 
-[1. Main class](#Main-클래스)  
-[2. PushWords class](#PushWords-클래스)
+[1. 입력값 받는 함수](#getInputValue)  
+[2. 입력값 변경하는 함수](#changeInputValue)
+[3. 변경된 입력값 보여주는 함수]($showInputValue)
 
 <br/>
 
-## Main 클래스
+## getInputValue
 
-1. PROMPT를 final 변수로 선언한다.
+1. Button event로 입력값을 함수로 보낸다.
 
-```java
-private static final String PROMPT = "> ";
+```JS
+inputBtn.addEventListener("click", moveStr.getInputValue.bind(moveStr));
 ```
 
-2. Scanner를 사용해서 사용자가 입력한 값을 받아온다.
+2. 스페이스를 기준으로 입력값을 배열로 전달한다.
 
-```java
-Scanner sc = new Scanner(System.in);
-System.out.print(PROMPT);
+```JS
+this.arrayWord = stringWord.split(" ");
+this.userWord = this.arrayWord[0];
+this.userNumber = Number(this.arrayWord[1]);
+this.userOrder = this.arrayWord[2].toUpperCase();
 ```
 
-3. 단어(word), 주어진 숫자(n), 이동 방향(direction)을 각각 다른 변수에 저장한 뒤 스캐너를 닫아준다.
+3. 사용자 입력 단어, 정수, 명령어를 입력값 변경 함수의 인자로 전달한다.
 
-```java
-String word = sc.next();
-int n = sc.nextInt();
-String direction = sc.next().toLowerCase();
-sc.close();
-```
-
-4. PushWords 인스턴스를 생성한 뒤, isLeft가 true라면 pushLeft메서드를 실행하고, false라면 pushRight 메서드를 실행한다.
-
-```java
-PushWords pw = new PushWords(word);
-
-if (pw.isLeft(n, direction)) pw.pushLeft(n);
-else pw.pushRight(n);
-```
-
-5. 결과값을 출력한다.
-
-```java
-pw.printWord(pw.deque);
+```JS
+this.changeInputValue(this.userWord, this.userNumber, this.userOrder);
 ```
 
 <br/>
 
-## PushWords 클래스
+## changeInputValue
 
-1. 단어 밀어내기 구현을 위한 deque을 선언한다.
+1. 사용자 입력 단어의 순서를 바꾸기 위해 문자열을 배열로 바꿔주는 변수를 만든다.
 
-```java
-Deque<Character> deque;
+```JS
+let wordArray = word.split("");
 ```
 
-2. word를 인자로 받고, word 문자열의 각 글자를 deque에 집어넣는 생성자를 정의한다.
+2. 명령어 값이 "L" 인 경우 정수 N 만큼 wordArray[0]을 제거하고 배열 끝에 집어넣는다.
 
-```java
-    public PushWords(String word) {
-        deque = new ArrayDeque<>();
-        for (int i = 0; i < word.length(); i++) {
-            deque.addLast(word.charAt(i));
-        }
+```JS
+if (option === "L") {
+    let i = 1;
+    while (i <= n) {
+        let firstAl = wordArray[0];
+        wordArray.splice(0, 1);
+        wordArray.push(firstAl);
+        ㅑ++;
     }
+}
 ```
 
-3. 단어 밀어내기 구현에 필요한 메서드를 정의한다.
+3. 명령어 값이 "R" 인 경우 정수 N 만큼 wordArray[wordArray.length -1]를 제거하고 배열 맨 앞에 집어넣는다.
 
-| 메서드               | 기능                                                           |
-| -------------------- | -------------------------------------------------------------- |
-| isLeft(n, direction) | 이동 방향 확인, 왼쪽으로 밀어야 되면 true, 아니면 false를 반환 |
-| pushLeft(n)          | 단어를 n의 절댓값만큼 왼쪽으로 밀기                            |
-| pushRight(n)         | 단어를 n의 절댓값만큼 오른쪽으로 밀기                          |
-| printWord(deque)     | 단어 출력                                                      |
-
-<br/>
-
-> **isLeft 메서드 : 이동 방향 확인, 왼쪽으로 밀어야 되면 true, 아니면 false를 반환**
-
-n이 양수 일 때는 입력한 문자대로, 음수일 때는 반대 방향으로 push된다는 점을 고려하여 코드를 설계하였다.
-
-```java
-    boolean isLeft(int n, String direction) {
-        if ((n > 0 && direction.equals("l")) || (n < 0 && direction.equals("r")))
-            return true;
-        return false;
+```JS
+if (option === "R") {
+    let i = 1;
+    while (i <= n) {
+        let lastAl = wordArray[wordArray.length - 1];
+        wordArray.splice(wordArray.length - 1, 1);
+        wordArray.unshift(lastAl);
+        i++;
     }
+   }
 ```
 
 <br/>
 
-> **pushLeft 메서드 : 단어를 n의 절댓값만큼 왼쪽으로 밀기**
+## showInputValue
 
-n이 음수인 경우를 고려하여, 이동 횟수를 저장하는 변수(numOfMovements)에 n의 절댓값을 저장하였다. deque의 첫 번째 원소를 꺼내어 마지막에 삽입하는 작업을 이동 횟수만큼 반복하면, 주어진 숫자 갯수만큼 단어를 밀어내고 밀려나간 단어를 반대쪽에 채울 수 있다.
+1. changeInputValue에서 전달 받은 배열 인자를 문자열로 바꿔준다.
 
-```java
-    void pushLeft(int n) {
-        int numOfMovements = Math.abs(n);
-        for (int i = 0; i < numOfMovements; i++) {
-            deque.addLast(deque.removeFirst());
-        }
-    }
+```JS
+const changedStr = word.join("");
 ```
 
-<br/>
+2. 변경된 문자열을 span으로 호출한다.
 
-> **pushRight 메서드 : 단어를 n의 절댓값만큼 오른쪽으로 밀기**
-
-pushLeft와 같은 방법으로 구현할 수 있다. 이 경우에는 deque의 마지막 원소를 꺼내어 deque의 첫 번째 원소로 삽입해주면 된다.
-
-```java
-    void pushRight(int n) {
-        int numOfMovements = Math.abs(n);
-        for (int i = 0; i < numOfMovements; i++) {
-            deque.addFirst(deque.removeLast());
-        }
-    }
-```
-
-<br/>
-
-> **printWord 메서드 : 단어 출력**
-
-pushLeft 또는 pushRight 메서드를 실행 한 뒤, deque를 순회하며 요소들을 출력하면 결과값을 얻을 수 있다.
-
-```java
-    void printWord(Deque<Character> deque) {
-        for (char x : deque) {
-            System.out.print(x);
-        }
-    }
+```JS
+const span = document.createElement("span");
+span.innerHTML = changedStr + "</br>";
+showResult.appendChild(span);
 ```
