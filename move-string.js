@@ -12,28 +12,37 @@ moveStr.getInputValue = function (event) {
   this.userWord = this.arrayWord[0];
   this.userNumber = Number(this.arrayWord[1]);
   this.userOrder = this.arrayWord[2].toUpperCase();
-  this.changeInputValue(this.userWord, this.userNumber, this.userOrder);
+  this.changeInputValue(this.userNumber, this.userOrder);
   inputValue.value = "";
 };
 
-moveStr.changeInputValue = function (word, n, option) {
-  let wordArray = word.split("");
-  if (option === "L") {
-    let i = 1;
-    while (i <= n) {
-      let firstAl = wordArray[0];
-      wordArray.splice(0, 1);
-      wordArray.push(firstAl);
-      i++;
-    }
-  } else if (option === "R") {
-    let i = 1;
-    while (i <= n) {
-      let lastAl = wordArray[wordArray.length - 1];
-      wordArray.splice(wordArray.length - 1, 1);
-      wordArray.unshift(lastAl);
-      i++;
-    }
+moveStr.changeInputValue = function (n, option) {
+  if ((n >= 0 && option === "L") || (n < 0 && option === "R")) {
+    this.pushLeft(Math.abs(n));
+  }
+  if ((n >= 0 && option === "R") || (n < 0 && option === "L")) {
+    this.pushRight(Math.abs(n));
+  }
+};
+
+moveStr.pushLeft = function (n) {
+  let wordArray = this.userWord.split("");
+
+  for (let i = 0; i < n; i++) {
+    let firstAl = wordArray[0];
+    wordArray.splice(0, 1);
+    wordArray.push(firstAl);
+  }
+  this.showInputValue(wordArray);
+};
+
+moveStr.pushRight = function (n) {
+  let wordArray = this.userWord.split("");
+
+  for (let i = 0; i < n; i++) {
+    let lastAl = wordArray[wordArray.length - 1];
+    wordArray.splice(wordArray.length - 1, 1);
+    wordArray.unshift(lastAl);
   }
   this.showInputValue(wordArray);
 };

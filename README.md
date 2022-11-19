@@ -41,9 +41,15 @@ atc
 
 ### 📑 목차
 
-[1. 입력값 받는 함수](#getInputValue)  
+[1. 입력값 받는 함수](#getInputValue)
+
 [2. 입력값 변경하는 함수](#changeInputValue)
-[3. 변경된 입력값 보여주는 함수]($showInputValue)
+
+[3. 조건에 따라 왼쪽으로 이동 시키는 함수](#pushLeft)
+
+[4. 조건에 따라 오른쪽으로 이동 시키는 함수](#pushRight)
+
+[5. 변경된 입력값 보여주는 함수]($showInputValue)
 
 <br/>
 
@@ -110,9 +116,49 @@ if (option === "R") {
 
 <br/>
 
+## pushLeft
+
+1. wordArray의 첫번째 인덱스를 제거하고 push를 이용해 배열 제일 끝으로 이동시킨다.
+
+```JS
+  for (let i = 0; i < n; i++) {
+    let firstAl = wordArray[0];
+    wordArray.splice(0, 1);
+    wordArray.push(firstAl);
+  }
+```
+
+2. 순서가 바뀐 wordArray를 showInputValue함수에 전달 한다.
+
+```JS
+this.showInputValue(wordArray);
+```
+
+<br/>
+
+## pushRight
+
+1. wordArray의 마지막 인덱스를 제거하고 unshift를 이용해 배열 처음으로 이동시킨다.
+
+```JS
+  for (let i = 0; i < n; i++) {
+    let lastAl = wordArray[wordArray.length - 1];
+    wordArray.splice(wordArray.length - 1, 1);
+    wordArray.unshift(lastAl);
+  }
+```
+
+2. 순서가 바뀐 wordArray를 showInputValue함수에 전달 한다.
+
+```JS
+this.showInputValue(wordArray);
+```
+
+<br/>
+
 ## showInputValue
 
-1. changeInputValue에서 전달 받은 배열 인자를 문자열로 바꿔준다.
+1. pushLeft, pushRight에서 전달 받은 배열 인자를 문자열로 바꿔준다.
 
 ```JS
 const changedStr = word.join("");
