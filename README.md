@@ -70,48 +70,25 @@ this.userNumber = Number(this.arrayWord[1]);
 this.userOrder = this.arrayWord[2].toUpperCase();
 ```
 
-3. 사용자 입력 단어, 정수, 명령어를 입력값 변경 함수의 인자로 전달한다.
+3. 사용자 입력 정수, 명령어를 입력값 변경 함수의 인자로 전달한다.
 
 ```JS
-this.changeInputValue(this.userWord, this.userNumber, this.userOrder);
+this.changeInputValue(this.userNumber, this.userOrder);
 ```
 
 <br/>
 
 ## changeInputValue
 
-1. 사용자 입력 단어의 순서를 바꾸기 위해 문자열을 배열로 바꿔주는 변수를 만든다.
+1. 전달 받은 입력값 N과 명령어에 따라 문자열 순서를 바꿔주는 pushLeft, pushRight함수를 실행한다.
 
 ```JS
-let wordArray = word.split("");
-```
-
-2. 명령어 값이 "L" 인 경우 정수 N 만큼 wordArray[0]을 제거하고 배열 끝에 집어넣는다.
-
-```JS
-if (option === "L") {
-    let i = 1;
-    while (i <= n) {
-        let firstAl = wordArray[0];
-        wordArray.splice(0, 1);
-        wordArray.push(firstAl);
-        ㅑ++;
-    }
-}
-```
-
-3. 명령어 값이 "R" 인 경우 정수 N 만큼 wordArray[wordArray.length -1]를 제거하고 배열 맨 앞에 집어넣는다.
-
-```JS
-if (option === "R") {
-    let i = 1;
-    while (i <= n) {
-        let lastAl = wordArray[wordArray.length - 1];
-        wordArray.splice(wordArray.length - 1, 1);
-        wordArray.unshift(lastAl);
-        i++;
-    }
-   }
+  if ((n >= 0 && option === "L") || (n < 0 && option === "R")) {
+    this.pushLeft(Math.abs(n));
+  }
+  if ((n >= 0 && option === "R") || (n < 0 && option === "L")) {
+    this.pushRight(Math.abs(n));
+  }
 ```
 
 <br/>
