@@ -29,10 +29,10 @@ cubeGame.filterInputValue = function () {
       this.inputArray.splice(i, 1);
     }
   }
-  this.moveCmd();
+  this.selectCmd();
 };
 
-cubeGame.moveCmd = function () {
+cubeGame.selectCmd = function () {
   for (let i = 0; i < this.inputArray.length; i++) {
     switch (this.inputArray[i]) {
       case "U":
