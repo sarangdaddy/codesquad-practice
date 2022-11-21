@@ -1,0 +1,60 @@
+.cube div {
+  margin: 10px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid black 1px;
+  font-size: 17px;
+}
+
+.cube {
+  display: flex;
+  position: relative;
+}
+
+.cube__top {
+  position: absolute;
+  color: red;
+  top: 80px;
+  left: 80px;
+}
+
+.cube__front {
+  position: absolute;
+  color: skyblue;
+  top: 80px;
+  left: 0;
+}
+
+.cube__left {
+  position: absolute;
+  color: darkgreen;
+  left: 120px;
+}
+
+.cube__right {
+  position: absolute;
+  color: purple;
+  left: 120px;
+  top: 160px;
+}
+
+.cube__back {
+  position: absolute;
+  color: darkorange;
+  top: 80px;
+  left: 160px;
+}
+
+.cube__bottom {
+  position: absolute;
+  color: black;
+  top: 80px;
+  left: 240px;
+}
+
+.form {
+  margin-top: 250px;
+}
