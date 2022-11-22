@@ -16,45 +16,58 @@
 
 .cube__top {
   position: absolute;
-  color: red;
   top: 80px;
   left: 80px;
 }
 
 .cube__front {
   position: absolute;
-  color: skyblue;
   top: 80px;
   left: 0;
 }
 
 .cube__left {
   position: absolute;
-  color: darkgreen;
   left: 120px;
 }
 
 .cube__right {
   position: absolute;
-  color: purple;
   left: 120px;
   top: 160px;
 }
 
 .cube__back {
   position: absolute;
-  color: darkorange;
   top: 80px;
   left: 160px;
 }
 
 .cube__bottom {
   position: absolute;
-  color: black;
   top: 80px;
   left: 240px;
 }
 
 .form {
   margin-top: 250px;
+}
+
+.T {
+  color: red;
+}
+.F {
+  color: skyblue;
+}
+.L {
+  color: darkgreen;
+}
+.R {
+  color: darkorange;
+}
+.B {
+  color: purple;
+}
+.M {
+  color: black;
 }

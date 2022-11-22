@@ -44,12 +44,14 @@ let cube = {
 };
 
 // 초기값 생성
-cubeTop.innerHTML = `${cube.topFace[0]} </br> ${cube.topFace[1]} </br> ${cube.topFace[2]}`;
-cubeFront.innerHTML = `${cube.frontFace[0]} </br> ${cube.frontFace[1]} </br> ${cube.frontFace[2]}`;
-cubeLeft.innerHTML = `${cube.leftFace[0]} </br> ${cube.leftFace[1]} </br> ${cube.leftFace[2]}`;
-cubeRight.innerHTML = `${cube.rightFace[0]} </br> ${cube.rightFace[1]} </br> ${cube.rightFace[2]}`;
-cubeBack.innerHTML = `${cube.backFace[0]} </br> ${cube.backFace[1]} </br> ${cube.backFace[2]}`;
-cubeBottom.innerHTML = `${cube.bottomFace[0]} </br> ${cube.bottomFace[1]} </br> ${cube.bottomFace[2]}`;
+cube.cubeLocation = function () {
+  cubeTop.innerHTML = `${this.topFace[0]} </br> ${this.topFace[1]} </br> ${this.topFace[2]}`;
+  cubeFront.innerHTML = `${this.frontFace[0]} </br> ${this.frontFace[1]} </br> ${this.frontFace[2]}`;
+  cubeLeft.innerHTML = `${this.leftFace[0]} </br> ${this.leftFace[1]} </br> ${this.leftFace[2]}`;
+  cubeRight.innerHTML = `${this.rightFace[0]} </br> ${this.rightFace[1]} </br> ${this.rightFace[2]}`;
+  cubeBack.innerHTML = `${this.backFace[0]} </br> ${this.backFace[1]} </br> ${this.backFace[2]}`;
+  cubeBottom.innerHTML = `${this.bottomFace[0]} </br> ${this.bottomFace[1]} </br> ${this.bottomFace[2]}`;
+};
 
 // 사용자 입력값 배열로 생성
 cube.getInputValue = function (event) {
@@ -62,50 +64,279 @@ cube.getInputValue = function (event) {
       this.inputValueArray.splice(i, 1);
     }
   }
-  this.selectCmdKey(this.inputValueArray);
+  this.selectCmdKey();
 };
 
-cube.selectCmdKey = function (keyArray) {
-  for (let i = 0; i < keyArray.length; i++) {
-    switch (keyArray[i]) {
+//입력값에 따라 cmd실행
+cube.selectCmdKey = function () {
+  console.log(this.inputValueArray);
+  for (let i = 0; i < this.inputValueArray.length; i++) {
+    switch (this.inputValueArray[i]) {
       case "T":
         this.topLeft90();
+        break;
       case "T'":
         this.topRight90();
+        break;
       case "M":
-        this.middleLeft90();
-      case "M'":
-        this.middleRight90();
-      case "B":
         this.bottomLeft90();
-      case "B'":
+        break;
+      case "M'":
         this.bottomRight90();
+        break;
       case "L":
         this.leftLeft90();
+        break;
       case "L'":
         this.leftRight90();
-      case "C":
-        this.centerLeft90();
-      case "C'":
-        this.centerRight90();
+        break;
       case "R":
         this.rightLeft90();
+        break;
       case "R'":
         this.rightRight90();
+        break;
       case "F":
         this.frontLeft90();
+        break;
       case "F'":
         this.frontRight90();
-      case "S":
-        this.secondLeft90();
-      case "S'":
-        this.secondRight90();
-      case "L":
-        this.lastLeft90();
-      case "L'":
-        this.kastRight90();
+        break;
+      case "B":
+        this.backLeft90();
+        break;
+      case "B'":
+        this.backRight90();
+        break;
+      default:
+        alert("T, T', M, M', L, L', R, R',F,F',B,B' 를 입력하세요.");
+        return;
     }
   }
 };
 
+//TOP 왼쪽으로 90도 회전
+cube.topLeft90 = function () {
+  const selFront = this.frontFace.shift();
+  const selLeft = this.leftFace.shift();
+  const selRight = this.rightFace.shift();
+  const selBack = this.backFace.shift();
+  this.leftFace.unshift(selFront);
+  this.backFace.unshift(selLeft);
+  this.rightFace.unshift(selBack);
+  this.frontFace.unshift(selRight);
+  this.cubeLocation();
+};
+
+//TOP 오른쪽으로 90도 회전
+cube.topRight90 = function () {
+  const selFront = this.frontFace.shift();
+  const selLeft = this.leftFace.shift();
+  const selRight = this.rightFace.shift();
+  const selBack = this.backFace.shift();
+  this.leftFace.unshift(selBack);
+  this.backFace.unshift(selRight);
+  this.rightFace.unshift(selFront);
+  this.frontFace.unshift(selLeft);
+  this.cubeLocation();
+};
+
+//BOTTOM 왼쪽으로 90도 회전
+cube.bottomLeft90 = function () {
+  const selFront = this.frontFace.pop();
+  const selLeft = this.leftFace.pop();
+  const selRight = this.rightFace.pop();
+  const selBack = this.backFace.pop();
+  this.leftFace.push(selFront);
+  this.backFace.push(selLeft);
+  this.rightFace.push(selBack);
+  this.frontFace.push(selRight);
+  this.cubeLocation();
+};
+
+//BOTTOM 오른쪽으로 90도 회전
+cube.bottomRight90 = function () {
+  const selFront = this.frontFace.pop();
+  const selLeft = this.leftFace.pop();
+  const selRight = this.rightFace.pop();
+  const selBack = this.backFace.pop();
+  this.leftFace.push(selBack);
+  this.backFace.push(selRight);
+  this.rightFace.push(selFront);
+  this.frontFace.push(selLeft);
+  this.cubeLocation();
+};
+
+//Left 왼쪽으로 90도 회전
+cube.leftLeft90 = function () {
+  const selFront = [];
+  const selTop = [];
+  const selBottom = [];
+  const selBack = [];
+
+  for (let i = 0; i < 3; i++) {
+    selFront.push(this.frontFace[i].shift());
+    selTop.push(this.topFace[i].shift());
+    selBottom.push(this.bottomFace[i].shift());
+    selBack.push(this.backFace[i].shift());
+    this.frontFace[i].unshift(selTop[i]);
+    this.bottomFace[i].unshift(selFront[i]);
+    this.backFace[i].unshift(selBottom[i]);
+    this.topFace[i].unshift(selBack[i]);
+  }
+
+  this.cubeLocation();
+};
+//Left 오른쪽으로 90도 회전
+cube.leftRight90 = function () {
+  const selFront = [];
+  const selTop = [];
+  const selBottom = [];
+  const selBack = [];
+
+  for (let i = 0; i < 3; i++) {
+    selFront.push(this.frontFace[i].shift());
+    selTop.push(this.topFace[i].shift());
+    selBottom.push(this.bottomFace[i].shift());
+    selBack.push(this.backFace[i].shift());
+    this.frontFace[i].unshift(selBottom[i]);
+    this.bottomFace[i].unshift(selBack[i]);
+    this.backFace[i].unshift(selTop[i]);
+    this.topFace[i].unshift(selFront[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Right 왼쪽으로 90도 회전
+cube.rightLeft90 = function () {
+  const selFront = [];
+  const selTop = [];
+  const selBottom = [];
+  const selBack = [];
+
+  for (let i = 0; i < 3; i++) {
+    selFront.push(this.frontFace[i].pop());
+    selTop.push(this.topFace[i].pop());
+    selBottom.push(this.bottomFace[i].pop());
+    selBack.push(this.backFace[i].pop());
+    this.frontFace[i].push(selTop[i]);
+    this.bottomFace[i].push(selFront[i]);
+    this.backFace[i].push(selBottom[i]);
+    this.topFace[i].push(selBack[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Right 오른쪽으로 90도 회전
+cube.rightRight90 = function () {
+  const selFront = [];
+  const selTop = [];
+  const selBottom = [];
+  const selBack = [];
+
+  for (let i = 0; i < 3; i++) {
+    selFront.push(this.frontFace[i].pop());
+    selTop.push(this.topFace[i].pop());
+    selBottom.push(this.bottomFace[i].pop());
+    selBack.push(this.backFace[i].pop());
+    this.frontFace[i].push(selBottom[i]);
+    this.bottomFace[i].push(selBack[i]);
+    this.backFace[i].push(selTop[i]);
+    this.topFace[i].push(selFront[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Front 왼쪽으로 90도 회전
+cube.frontLeft90 = function () {
+  const selTop = [];
+  const selLeft = [];
+  const selBottom = [];
+  const selRight = [];
+
+  for (let i = 0; i < 3; i++) {
+    selTop.push(this.topFace[i].shift());
+    selLeft.push(this.leftFace[i].shift());
+    selBottom.push(this.bottomFace[i].shift());
+    selRight.push(this.rightFace[i].shift());
+    this.topFace[i].unshift(selRight[i]);
+    this.leftFace[i].unshift(selTop[i]);
+    this.bottomFace[i].unshift(selLeft[i]);
+    this.rightFace[i].unshift(selBottom[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Front 오른쪽으로 90도 회전
+cube.frontRight90 = function () {
+  const selTop = [];
+  const selLeft = [];
+  const selBottom = [];
+  const selRight = [];
+
+  for (let i = 0; i < 3; i++) {
+    selTop.push(this.topFace[i].shift());
+    selLeft.push(this.leftFace[i].shift());
+    selBottom.push(this.bottomFace[i].shift());
+    selRight.push(this.rightFace[i].shift());
+    this.topFace[i].unshift(selLeft[i]);
+    this.leftFace[i].unshift(selBottom[i]);
+    this.bottomFace[i].unshift(selRight[i]);
+    this.rightFace[i].unshift(selTop[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Back 왼쪽으로 90도 회전
+cube.backLeft90 = function () {
+  const selTop = [];
+  const selLeft = [];
+  const selBottom = [];
+  const selRight = [];
+
+  for (let i = 0; i < 3; i++) {
+    selTop.push(this.topFace[i].pop());
+    selLeft.push(this.leftFace[i].pop());
+    selBottom.push(this.bottomFace[i].pop());
+    selRight.push(this.rightFace[i].pop());
+    this.topFace[i].push(selRight[i]);
+    this.leftFace[i].push(selTop[i]);
+    this.bottomFace[i].push(selLeft[i]);
+    this.rightFace[i].push(selBottom[i]);
+  }
+
+  this.cubeLocation();
+};
+
+//Back 오른쪽으로 90도 회전
+cube.backRight90 = function () {
+  const selTop = [];
+  const selLeft = [];
+  const selBottom = [];
+  const selRight = [];
+
+  for (let i = 0; i < 3; i++) {
+    selTop.push(this.topFace[i].pop());
+    selLeft.push(this.leftFace[i].pop());
+    selBottom.push(this.bottomFace[i].pop());
+    selRight.push(this.rightFace[i].pop());
+    this.topFace[i].push(selLeft[i]);
+    this.leftFace[i].push(selBottom[i]);
+    this.bottomFace[i].push(selRight[i]);
+    this.rightFace[i].push(selTop[i]);
+  }
+  this.cubeLocation();
+};
+
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
+
+cube.init = function () {
+  this.cubeLocation();
+};
+
+cube.init();
