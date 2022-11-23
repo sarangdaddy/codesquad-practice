@@ -28,12 +28,12 @@
 
 .cube__left {
   position: absolute;
-  left: 120px;
+  left: 80px;
 }
 
 .cube__right {
   position: absolute;
-  left: 120px;
+  left: 80px;
   top: 160px;
 }
 
@@ -70,4 +70,8 @@
 }
 .M {
   color: black;
+}
+
+.result {
+  margin-top: 50px;
 }

@@ -9,6 +9,7 @@ const cubeBottom = mainCube.querySelector(".cube__bottom");
 const inputValue = document.querySelector(".form__input");
 const inputButton = document.querySelector(".form__btn__submit");
 const mixButton = document.querySelector(".form__btn__mix");
+const resultValue = document.querySelector(".result");
 
 let cube = {
   topFace: [
@@ -64,12 +65,12 @@ cube.getInputValue = function (event) {
       this.inputValueArray.splice(i, 1);
     }
   }
+  inputValue.value = "";
   this.selectCmdKey();
 };
 
 //입력값에 따라 cmd실행
 cube.selectCmdKey = function () {
-  console.log(this.inputValueArray);
   for (let i = 0; i < this.inputValueArray.length; i++) {
     switch (this.inputValueArray[i]) {
       case "T":
@@ -108,8 +109,11 @@ cube.selectCmdKey = function () {
       case "B'":
         this.backRight90();
         break;
+      case "Q":
+        this.endCude();
+        break;
       default:
-        alert("T, T', M, M', L, L', R, R',F,F',B,B' 를 입력하세요.");
+        alert("T, T', M, M', L, L', R, R',F,F',B,B',Q 를 입력하세요.");
         return;
     }
   }
@@ -331,6 +335,13 @@ cube.backRight90 = function () {
     this.rightFace[i].push(selTop[i]);
   }
   this.cubeLocation();
+};
+
+// Cube 종료 "Q" 입력시 실행 함수
+cube.endCude = function () {
+  const span = document.createElement("span");
+  span.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 :  </br> 조작갯수 :  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.`;
+  resultValue.appendChild(span);
 };
 
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
