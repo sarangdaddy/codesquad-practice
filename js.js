@@ -19,12 +19,12 @@ let cube = {
   rightFace: [],
   backFace: [],
   bottomFace: [],
+  count: 0,
 };
 
 // 최초 cube(정답) 셋팅
 cube.baseSet = function () {
   this.startTime = Date.now();
-  console.log(cube.startTime);
   this.topFace = Array.from(Array(3), () => Array(3).fill("T"));
   this.frontFace = Array.from(Array(3), () => Array(3).fill("F"));
   this.leftFace = Array.from(Array(3), () => Array(3).fill("L"));
@@ -34,7 +34,7 @@ cube.baseSet = function () {
   this.cubeLocation();
 };
 
-// 걱 면의 색깔 표시
+// 각 면의 색깔 표시
 cube.cubeLocation = function () {
   cubeTop.innerHTML = `${this.topFace[0]} </br> ${this.topFace[1]} </br> ${this.topFace[2]}`;
   cubeFront.innerHTML = `${this.frontFace[0]} </br> ${this.frontFace[1]} </br> ${this.frontFace[2]}`;
@@ -65,39 +65,51 @@ cube.selectCmdKey = function () {
     switch (this.inputValueArray[i]) {
       case "T":
         this.topLeft90();
+        this.count++;
         break;
       case "T'":
         this.topRight90();
+        this.count++;
         break;
       case "M":
         this.bottomLeft90();
+        this.count++;
         break;
       case "M'":
         this.bottomRight90();
+        this.count++;
         break;
       case "L":
         this.leftLeft90();
+        this.count++;
         break;
       case "L'":
         this.leftRight90();
+        this.count++;
         break;
       case "R":
         this.rightLeft90();
+        this.count++;
         break;
       case "R'":
         this.rightRight90();
+        this.count++;
         break;
       case "F":
         this.frontLeft90();
+        this.count++;
         break;
       case "F'":
         this.frontRight90();
+        this.count++;
         break;
       case "B":
         this.backLeft90();
+        this.count++;
         break;
       case "B'":
         this.backRight90();
+        this.count++;
         break;
       case "Q":
         this.endCude();
@@ -330,17 +342,19 @@ cube.backRight90 = function () {
 // Cube 종료 "Q" 입력시 실행 함수
 cube.endCude = function () {
   this.endTime = Date.now();
+  const totalCount = this.count;
   const recordTime = ((this.endTime - this.startTime) / 1000).toFixed(1);
-  const span = document.createElement("span");
-  span.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 :  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.`;
-  resultValue.appendChild(span);
+  this.resultSpan = document.createElement("span");
+  this.resultSpan.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`;
+  resultValue.appendChild(this.resultSpan);
 };
 
 // Reset버튼 입력시 결과값 삭제 & 초기 셋팅값 불러오기
 cube.gameReset = function (event) {
   event.preventDefault();
-  resultValue.remove("span");
-  this.baseSet();
+  this.count = 0;
+  resultValue.removeChild(this.resultSpan);
+  this.init();
 };
 
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
