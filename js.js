@@ -8,6 +8,7 @@ const cubeBottom = mainCube.querySelector(".cube__bottom");
 
 const inputValue = document.querySelector(".form__input");
 const inputButton = document.querySelector(".form__btn__submit");
+const resetButton = document.querySelector(".form__btn__reset");
 const mixButton = document.querySelector(".form__btn__mix");
 const resultValue = document.querySelector(".result");
 
@@ -53,6 +54,9 @@ cube.cubeLocation = function () {
   cubeBack.innerHTML = `${this.backFace[0]} </br> ${this.backFace[1]} </br> ${this.backFace[2]}`;
   cubeBottom.innerHTML = `${this.bottomFace[0]} </br> ${this.bottomFace[1]} </br> ${this.bottomFace[2]}`;
 };
+
+cube.startTime = Date.now();
+console.log(cube.startTime);
 
 // 사용자 입력값 배열로 생성
 cube.getInputValue = function (event) {
@@ -339,12 +343,20 @@ cube.backRight90 = function () {
 
 // Cube 종료 "Q" 입력시 실행 함수
 cube.endCude = function () {
+  this.endTime = Date.now();
+  const recordTime = ((this.endTime - this.startTime) / 1000).toFixed(1);
   const span = document.createElement("span");
-  span.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 :  </br> 조작갯수 :  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.`;
+  span.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 :  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.`;
   resultValue.appendChild(span);
 };
 
+cube.gameReset = function (event) {
+  event.preventDefault();
+  cube.init();
+};
+
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
+resetButton.addEventListener("click", cube.gameReset.bind(cube));
 
 cube.init = function () {
   this.cubeLocation();
