@@ -13,39 +13,28 @@ const mixButton = document.querySelector(".form__btn__mix");
 const resultValue = document.querySelector(".result");
 
 let cube = {
-  topFace: [
-    ["T", "T", "T"],
-    ["T", "T", "T"],
-    ["T", "T", "T"],
-  ],
-  frontFace: [
-    ["F", "F", "F"],
-    ["F", "F", "F"],
-    ["F", "F", "F"],
-  ],
-  leftFace: [
-    ["L", "L", "L"],
-    ["L", "L", "L"],
-    ["L", "L", "L"],
-  ],
-  rightFace: [
-    ["R", "R", "R"],
-    ["R", "R", "R"],
-    ["R", "R", "R"],
-  ],
-  backFace: [
-    ["B", "B", "B"],
-    ["B", "B", "B"],
-    ["B", "B", "B"],
-  ],
-  bottomFace: [
-    ["M", "M", "M"],
-    ["M", "M", "M"],
-    ["M", "M", "M"],
-  ],
+  topFace: [],
+  frontFace: [],
+  leftFace: [],
+  rightFace: [],
+  backFace: [],
+  bottomFace: [],
 };
 
-// 초기값 생성
+// 최초 cube(정답) 셋팅
+cube.baseSet = function () {
+  this.startTime = Date.now();
+  console.log(cube.startTime);
+  this.topFace = Array.from(Array(3), () => Array(3).fill("T"));
+  this.frontFace = Array.from(Array(3), () => Array(3).fill("F"));
+  this.leftFace = Array.from(Array(3), () => Array(3).fill("L"));
+  this.rightFace = Array.from(Array(3), () => Array(3).fill("R"));
+  this.backFace = Array.from(Array(3), () => Array(3).fill("B"));
+  this.bottomFace = Array.from(Array(3), () => Array(3).fill("M"));
+  this.cubeLocation();
+};
+
+// 걱 면의 색깔 표시
 cube.cubeLocation = function () {
   cubeTop.innerHTML = `${this.topFace[0]} </br> ${this.topFace[1]} </br> ${this.topFace[2]}`;
   cubeFront.innerHTML = `${this.frontFace[0]} </br> ${this.frontFace[1]} </br> ${this.frontFace[2]}`;
@@ -54,9 +43,6 @@ cube.cubeLocation = function () {
   cubeBack.innerHTML = `${this.backFace[0]} </br> ${this.backFace[1]} </br> ${this.backFace[2]}`;
   cubeBottom.innerHTML = `${this.bottomFace[0]} </br> ${this.bottomFace[1]} </br> ${this.bottomFace[2]}`;
 };
-
-cube.startTime = Date.now();
-console.log(cube.startTime);
 
 // 사용자 입력값 배열로 생성
 cube.getInputValue = function (event) {
@@ -350,16 +336,18 @@ cube.endCude = function () {
   resultValue.appendChild(span);
 };
 
+// Reset버튼 입력시 결과값 삭제 & 초기 셋팅값 불러오기
 cube.gameReset = function (event) {
   event.preventDefault();
-  cube.init();
+  resultValue.remove("span");
+  this.baseSet();
 };
 
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
 resetButton.addEventListener("click", cube.gameReset.bind(cube));
 
 cube.init = function () {
-  this.cubeLocation();
+  this.baseSet();
 };
 
 cube.init();
