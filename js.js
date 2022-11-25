@@ -66,50 +66,62 @@ cube.selectCmdKey = function () {
       case "T":
         this.topLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "T'":
         this.topRight90();
         this.count++;
+        this.checkCube();
         break;
       case "M":
         this.bottomLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "M'":
         this.bottomRight90();
         this.count++;
+        this.checkCube();
         break;
       case "L":
         this.leftLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "L'":
         this.leftRight90();
         this.count++;
+        this.checkCube();
         break;
       case "R":
         this.rightLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "R'":
         this.rightRight90();
         this.count++;
+        this.checkCube();
         break;
       case "F":
         this.frontLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "F'":
         this.frontRight90();
         this.count++;
+        this.checkCube();
         break;
       case "B":
         this.backLeft90();
         this.count++;
+        this.checkCube();
         break;
       case "B'":
         this.backRight90();
         this.count++;
+        this.checkCube();
         break;
       case "Q":
         this.endCude();
@@ -344,17 +356,57 @@ cube.endCude = function () {
   this.endTime = Date.now();
   const totalCount = this.count;
   const recordTime = ((this.endTime - this.startTime) / 1000).toFixed(1);
-  this.resultSpan = document.createElement("span");
-  this.resultSpan.innerHTML = `입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`;
-  resultValue.appendChild(this.resultSpan);
+  const span = document.createElement("span");
+  span.innerHTML = `<div id="Myspan"> 입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`;
+  resultValue.appendChild(span.firstChild);
 };
 
 // Reset버튼 입력시 결과값 삭제 & 초기 셋팅값 불러오기
 cube.gameReset = function (event) {
   event.preventDefault();
   this.count = 0;
-  resultValue.removeChild(this.resultSpan);
+  const span = document.getElementById("Myspan");
+  resultValue.removeChild(span);
   this.init();
+};
+
+// Cube 입력 중 정답이면 게임 종료 실행
+cube.checkCube = function () {
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (this.topFace[i][j] !== "T") {
+        return false;
+      }
+      if (this.frontFace[i][j] !== "F") {
+        return false;
+      }
+      if (this.leftFace[i][j] !== "L") {
+        return false;
+      }
+      if (this.rightFace[i][j] !== "R") {
+        return false;
+      }
+      if (this.backFace[i][j] !== "B") {
+        return false;
+      }
+      if (this.bottomFace[i][j] !== "M") {
+        return false;
+      }
+    }
+  }
+  this.clearCube();
+};
+
+// 게임 종료 함수
+cube.clearCube = function () {
+  this.endTime = Date.now();
+  const totalCount = this.count;
+  const recordTime = ((this.endTime - this.startTime) / 1000).toFixed(1);
+  if (this.checkCube) {
+    document.write(
+      `축하합니다. 정답입니다. </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`
+    );
+  }
 };
 
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
