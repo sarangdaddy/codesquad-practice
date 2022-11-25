@@ -24,7 +24,7 @@ let cube = {
 
 // 최초 cube(정답) 셋팅
 cube.baseSet = function () {
-  this.startTime = Date.now();
+  this.startTime = Date.now(); // cube mix 만든 후 이동
   this.topFace = Array.from(Array(3), () => Array(3).fill("T"));
   this.frontFace = Array.from(Array(3), () => Array(3).fill("F"));
   this.leftFace = Array.from(Array(3), () => Array(3).fill("L"));
@@ -409,8 +409,39 @@ cube.clearCube = function () {
   }
 };
 
+// Cube MIX 버튼 클릭시 큐브 섞기
+cube.doMixCube = function (event) {
+  event.preventDefault();
+
+  let cmdArray = [
+    cube.topLeft90,
+    cube.topRight90,
+    cube.frontLeft90,
+    cube.frontRight90,
+    cube.leftLeft90,
+    cube.leftRight90,
+    cube.rightLeft90,
+    cube.rightRight90,
+    cube.backLeft90,
+    cube.backRight90,
+    cube.bottomLeft90,
+    cube.bottomRight90,
+  ];
+
+  let randomNum = Number(Math.random() * 10);
+
+  cmdArray.sort(function () {
+    return Math.random() - Math.random();
+  });
+
+  for (let i = 0; i < randomNum; i++) {
+    cmdArray.forEach((e) => console.log(e));
+  }
+};
+
 inputButton.addEventListener("click", cube.getInputValue.bind(cube));
 resetButton.addEventListener("click", cube.gameReset.bind(cube));
+mixButton.addEventListener("click", cube.doMixCube.bind(cube));
 
 cube.init = function () {
   this.baseSet();
