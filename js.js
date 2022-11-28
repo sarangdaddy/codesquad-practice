@@ -10,7 +10,7 @@ const inputValue = document.querySelector(".form__input");
 const inputButton = document.querySelector(".form__btn__submit");
 const resetButton = document.querySelector(".form__btn__reset");
 const mixButton = document.querySelector(".form__btn__mix");
-const resultValue = document.querySelector(".result");
+const resultValue = document.querySelector(".result__span");
 
 let cube = {
   topFace: [],
@@ -24,7 +24,7 @@ let cube = {
 
 // 최초 cube(정답) 셋팅
 cube.baseSet = function () {
-  this.startTime = Date.now(); // cube mix 만든 후 이동
+  this.startTime = Date.now();
   this.topFace = Array.from(Array(3), () => Array(3).fill("T"));
   this.frontFace = Array.from(Array(3), () => Array(3).fill("F"));
   this.leftFace = Array.from(Array(3), () => Array(3).fill("L"));
@@ -356,17 +356,15 @@ cube.endCude = function () {
   this.endTime = Date.now();
   const totalCount = this.count;
   const recordTime = ((this.endTime - this.startTime) / 1000).toFixed(1);
-  const span = document.createElement("span");
-  span.innerHTML = `<div id="Myspan"> 입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`;
-  resultValue.appendChild(span.firstChild);
+  resultValue.innerHTML = `<div id="Myspan"> 입력 : ${this.inputValueArray} </br> 경과시간 : ${recordTime}초  </br> 조작갯수 : ${totalCount}번  </br> 이용해주셔서 감사합니다. 뚜뚜뚜.</br>`;
 };
 
 // Reset버튼 입력시 결과값 삭제 & 초기 셋팅값 불러오기
 cube.gameReset = function (event) {
   event.preventDefault();
   this.count = 0;
-  const span = document.getElementById("Myspan");
-  resultValue.removeChild(span);
+  this.startTime = Date.now();
+  resultValue.innerHTML = "";
   this.init();
 };
 
@@ -409,33 +407,75 @@ cube.clearCube = function () {
   }
 };
 
-// Cube MIX 버튼 클릭시 큐브 섞기
+// Cube MIX 버튼 클릭시 cmd키 전달 함수
 cube.doMixCube = function (event) {
   event.preventDefault();
-
+  this.startTime = Date.now();
   let cmdArray = [
-    cube.topLeft90,
-    cube.topRight90,
-    cube.frontLeft90,
-    cube.frontRight90,
-    cube.leftLeft90,
-    cube.leftRight90,
-    cube.rightLeft90,
-    cube.rightRight90,
-    cube.backLeft90,
-    cube.backRight90,
-    cube.bottomLeft90,
-    cube.bottomRight90,
+    "T",
+    "T'",
+    "F",
+    "F'",
+    "L",
+    "L'",
+    "R",
+    "R'",
+    "B",
+    "B'",
+    "M",
+    "M'",
   ];
 
-  let randomNum = Number(Math.random() * 10);
+  let randomNum = Math.floor(Math.random() * 10 + 1);
 
   cmdArray.sort(function () {
-    return Math.random() - Math.random();
+    return Math.random() - 0.5;
   });
 
-  for (let i = 0; i < randomNum; i++) {
-    cmdArray.forEach((e) => console.log(e));
+  for (let i = 1; i <= randomNum; i++) {
+    cmdArray.forEach((keys) => this.mixCmdDo(keys));
+  }
+};
+
+// MIX된 cmd키 실행
+cube.mixCmdDo = function (keys) {
+  switch (keys) {
+    case "T":
+      this.topLeft90();
+      break;
+    case "T'":
+      this.topRight90();
+      break;
+    case "M":
+      this.bottomLeft90();
+      break;
+    case "M'":
+      this.bottomRight90();
+      break;
+    case "L":
+      this.leftLeft90();
+      break;
+    case "L'":
+      this.leftRight90();
+      break;
+    case "R":
+      this.rightLeft90();
+      break;
+    case "R'":
+      this.rightRight90();
+      break;
+    case "F":
+      this.frontLeft90();
+      break;
+    case "F'":
+      this.frontRight90();
+      break;
+    case "B":
+      this.backLeft90();
+      break;
+    case "B'":
+      this.backRight90();
+      break;
   }
 };
 
